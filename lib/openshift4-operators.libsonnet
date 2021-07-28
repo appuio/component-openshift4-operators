@@ -2,10 +2,16 @@
  * \file Library with public methods provided by component openshift4-operators.
  */
 
+local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 
 local inv = kap.inventory();
+
+local instanceParams(instance) =
+  local ikey = std.strReplace(instance, '-', '_');
+  inv.parameters.openshift4_operators +
+  com.getValueOrDefault(inv.parameters, ikey, {});
 
 local validateInstance(instance, checkTargets=false, checkSource='') =
   local supported_instances = std.set([
@@ -41,9 +47,9 @@ local registerSubscription =
     instance,
     name,
     channel,
-    source='redhat-operators',
-    sourceNamespace='openshift-marketplace',
-    installPlanApproval='Automatic'
+    source=instanceParams(instance).defaultSource,
+    sourceNamespace=instanceParams(instance).defaultSourceNamespace,
+    installPlanApproval=instanceParams(instance).defaultInstallPlanApproval
   )
     local _instance = validateInstance(
       instance,

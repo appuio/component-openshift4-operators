@@ -3,3 +3,11 @@ parameters:
     =_metadata: {}
     multi_instance: true
     namespace: ${_instance}
+    defaultInstallPlanApproval: Automatic
+    defaultSourceNamespace: openshift-marketplace
+
+  openshift_operators:
+    defaultSource: community-operators
+
+  openshift_operators_redhat:
+    defaultSource: redhat-operators

@@ -70,9 +70,6 @@ local operatorlib = import 'lib/openshift4-operators.libsonnet';
     'openshift-operators', <1>
     'grafana-operator', <2>
     'alpha', <3>
-    source='community-operators', <4>
-    installPlanApproval='Automatic', <5>
-    sourceNamespace='openshift-marketplace', <6>
   )
 }
 ----
@@ -80,15 +77,6 @@ local operatorlib = import 'lib/openshift4-operators.libsonnet';
 Use the same value as you've selected for `${INSTANCE}` in the 3rd step.
 <2> The name of the subscription
 <3> The update channel for the subscription
-<4> The `CatalogSource` for the subscription.
-For community operators, set this to `community-operators`.
-For RedHat operators, this parameter can be omitted, as it defaults to `redhat-operators`.
-<5> Whether installation and upgrades happen automatically.
-In most cases, you don't have to specify this parameter.
-If the parameter is omitted, it defaults to `Automatic`.
-<6> The namespace in which to look for the `CatalogSource`.
-In most cases, you don't have to specify this parameter.
-If the parameter is omitted, it defaults to `openshift-marketplace`.
 
 . Compile the catalog locally to check your changes
 +
@@ -111,10 +99,13 @@ metadata:
   namespace: openshift-operators
 spec:
   channel: alpha
-  installPlanApproval: Automatic
+  installPlanApproval: Automatic <1>
   name: grafana-operator
-  source: community-operators
-  sourceNamespace: openshift-marketplace
+  source: community-operators <2>
+  sourceNamespace: openshift-marketplace <3>
 ----
+<1> The value of this field can be changed by providing optional parameter `installPlanApproval` when calling function `registerSubscription`.
+<2> The value of this field can be changed by providing optional parameter `source` when calling function `registerSubscription`.
+<3> The value of this field can be changed by providing optional parameter `sourceNamespace` when calling function `registerSubscription`.
 +
 If the component hasn't previously been instantiated for `openshift-operators`, you'll also see new YAML files in the catalog in directory `openshift4-operators`.
