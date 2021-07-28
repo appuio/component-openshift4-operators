@@ -13,6 +13,8 @@ local instanceParams(instance) =
   local ikey = std.strReplace(instance, '-', '_');
   params + com.getValueOrDefault(inv.parameters, ikey, {});
 
+local apigroup = 'operators.coreos.com';
+
 local validateInstance(instance, checkTargets=false, checkSource='') =
   local supported_instances = std.set([
     'openshift-operators',
@@ -43,12 +45,14 @@ local validateInstance(instance, checkTargets=false, checkSource='') =
 
 
 local Subscription(name) =
-  kube._Object('operators.coreos.com/v1alpha1', 'Subscription', name) {
+  kube._Object(apigroup + '/v1alpha1', 'Subscription', name) {
     spec: {
       name: name,
     },
   };
 
+local OperatorGroup(name) =
+  kube._Object(apigroup + '/v1', 'OperatorGroup', name);
 
 local globalSubscription =
   function(
@@ -100,5 +104,6 @@ local namespacedSubscription =
 {
   globalSubscription: globalSubscription,
   namespacedSubscription: namespacedSubscription,
+  OperatorGroup: OperatorGroup,
   validateInstance: validateInstance,
 }

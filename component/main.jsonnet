@@ -24,7 +24,7 @@ local namespace = operatorlib.validateInstance(params.namespace);
       },
     },
     // Create cluster-scoped OperatorGroup
-    kube._Object('operators.coreos.com/v1', 'OperatorGroup', namespace) {
+    operatorlib.OperatorGroup(namespace) {
       metadata+: {
         namespace: namespace,
       },
