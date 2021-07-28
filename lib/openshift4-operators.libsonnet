@@ -5,6 +5,25 @@
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 
-// Export library functions here
+local inv = kap.inventory();
+
+local validateInstance(instance, checkTargets=false, checkSource='') =
+  local supported_instances = std.set([
+    'openshift-operators',
+    'openshift-operators-redhat',
+  ]);
+
+  assert
+    std.setMember(instance, supported_instances) :
+    "\n  Invalid instance '%s' for component openshift4-operators." % [
+      instance,
+    ] +
+    '\n  Supported instances are %s' % [
+      supported_instances,
+    ];
+
+  instance;
+
 {
+  validateInstance: validateInstance,
 }
