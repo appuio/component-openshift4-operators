@@ -8,10 +8,10 @@ local kube = import 'lib/kube.libjsonnet';
 
 local inv = kap.inventory();
 
+local params = inv.parameters.openshift4_operators;
 local instanceParams(instance) =
   local ikey = std.strReplace(instance, '-', '_');
-  inv.parameters.openshift4_operators +
-  com.getValueOrDefault(inv.parameters, ikey, {});
+  params + com.getValueOrDefault(inv.parameters, ikey, {});
 
 local validateInstance(instance, checkTargets=false, checkSource='') =
   local supported_instances = std.set([
@@ -42,7 +42,15 @@ local validateInstance(instance, checkTargets=false, checkSource='') =
   instance;
 
 
-local registerSubscription =
+local Subscription(name) =
+  kube._Object('operators.coreos.com/v1alpha1', 'Subscription', name) {
+    spec: {
+      name: name,
+    },
+  };
+
+
+local globalSubscription =
   function(
     instance,
     name,
@@ -56,20 +64,41 @@ local registerSubscription =
       checkTargets=true,
       checkSource='subscription %s' % [ name ]
     );
-    kube._Object('operators.coreos.com/v1alpha1', 'Subscription', name) {
+    Subscription(name) {
       metadata+: {
         namespace: _instance,
       },
-      spec: {
+      spec+: {
         channel: channel,
         installPlanApproval: installPlanApproval,
         source: source,
         sourceNamespace: sourceNamespace,
-        name: name,
+      },
+    };
+
+local namespacedSubscription =
+  function(
+    namespace,
+    name,
+    channel,
+    source,
+    sourceNamespace=params.defaultSourceNamespace,
+    installPlanApproval=params.defaultInstallPlanApproval
+  )
+    Subscription(name) {
+      metadata+: {
+        namespace: namespace,
+      },
+      spec+: {
+        channel: channel,
+        installPlanApproval: installPlanApproval,
+        source: source,
+        sourceNamespace: sourceNamespace,
       },
     };
 
 {
-  registerSubscription: registerSubscription,
+  globalSubscription: globalSubscription,
+  namespacedSubscription: namespacedSubscription,
   validateInstance: validateInstance,
 }
