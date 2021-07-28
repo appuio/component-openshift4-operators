@@ -1,0 +1,4 @@
+parameters:
+  openshift4_operators:
+    =_metadata: {}
+    namespace: syn-openshift4-operators

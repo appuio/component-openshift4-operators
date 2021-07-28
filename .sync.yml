@@ -1,0 +1,7 @@
+:global:
+  componentName: openshift4-operators
+  githubUrl: https://github.com/appuio/component-openshift4-operators
+
+docs/antora.yml:
+  name: openshift4-operators
+  title: openshift4-operators

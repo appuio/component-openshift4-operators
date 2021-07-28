@@ -1,0 +1,5 @@
+= openshift4-operators
+
+openshift4-operators is a Commodore component to manage openshift4-operators.
+
+See the xref:references/parameters.adoc[parameters] reference for further details.
