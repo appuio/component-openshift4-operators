@@ -1,2 +1,3 @@
 * xref:index.adoc[Home]
+* xref:how-tos/getting-started.adoc[Getting started]
 * xref:references/parameters.adoc[Parameters]

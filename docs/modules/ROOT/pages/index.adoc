@@ -1,5 +1,9 @@
 = openshift4-operators
 
-openshift4-operators is a Commodore component to manage openshift4-operators.
+openshift4-operators is a Commodore component to manage target namespaces for cluster-scoped OLM-managed operators on OpenShift 4.
 
-See the xref:references/parameters.adoc[parameters] reference for further details.
+The component provides a Jsonnet library which allows other components to create cluster-scoped operator subscriptions.
+
+See the xref:how-tos/getting-started.adoc[getting started guide] to get started with the component.
+
+See the xref:references/parameters.adoc[parameters] reference for configurable options of the component.
