@@ -9,7 +9,7 @@ local params = inv.parameters.openshift4_operators;
 local namespace = operatorlib.validateInstance(params.namespace);
 
 {
-  [namespace]:
+  [namespace]: [
     kube.Namespace(namespace) {
       metadata+: {
         annotations+: {
@@ -23,4 +23,11 @@ local namespace = operatorlib.validateInstance(params.namespace);
         },
       },
     },
+    // Create cluster-scoped OperatorGroup
+    kube._Object('operators.coreos.com/v1', 'OperatorGroup', namespace) {
+      metadata+: {
+        namespace: namespace,
+      },
+    },
+  ],
 }
