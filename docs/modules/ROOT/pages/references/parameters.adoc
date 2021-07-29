@@ -6,14 +6,39 @@ The parent key for all of the following parameters is `openshift4_operators`.
 
 [horizontal]
 type:: string
-default:: `syn-openshift4-operators`
+default:: `${_instance}`
 
-The namespace in which to deploy this component.
+The namespace to create for the component instance.
+The component is implemented in such a way that only instances (and therefore namespaces) `openshift-operators` and `openshift-operators-redhat` can be created.
+Generally, it shouldn't be necessary to override this parameter.
 
+== `defaultInstallPlanApproval`
 
-== Example
+[horizontal]
+type:: string
+default:: `Automatic`
 
-[source,yaml]
-----
-namespace: example-namespace
-----
+This parameter configures the default value for the optional parameter `installPlanApproval` of the component library function `registerSubscription`.
+
+== `defaultSourceNamespace`
+
+[horizontal]
+type:: string
+default:: `openshift-marketplace`
+
+This parameter configures the default value for the optional parameter `sourceNamespace` of the component library function `registerSubscription`.
+
+== `defaultSource`
+
+[horizontal]
+type:: string
+default::
++
+* `certified-operators` for instance `openshift-operators`
+* `redhat-operators` for instance `openshift-operators-redhat`
+
+This parameter configures the default value for the optional parameter `source` of the component library function `registerSubscription`.
+
+The component defaults to `certified-operators` for instance `openshift-operators`.
+This source provides community-maintained operators which are certified by RedHat.
+Alternatively, you can use `community-operators` for other community-maintained operators.

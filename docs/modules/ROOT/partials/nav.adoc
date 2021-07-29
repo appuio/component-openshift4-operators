@@ -1,2 +1,8 @@
 * xref:index.adoc[Home]
+
+.How-tos
+* xref:how-tos/getting-started.adoc[Getting started]
+
+.Reference
+* xref:references/component-library.adoc[Component library]
 * xref:references/parameters.adoc[Parameters]

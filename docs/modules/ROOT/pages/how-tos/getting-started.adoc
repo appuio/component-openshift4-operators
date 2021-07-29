@@ -1,0 +1,113 @@
+= Getting started
+
+This guide will help you to get started to use this component to configure cluster-scoped operator subscriptions.
+
+== Prerequisites
+
+* You have an OpenShift 4 cluster on which you want to configure a cluster-scoped operator subscription from a Commodore component
+* You are able to compile the cluster catalog locally
+
+== Steps
+
+[TIP]
+====
+We recommend creating an empty directory and following these steps after changing to that directory.
+
+[source,bash]
+----
+work_dir=$(mktemp -d)
+pushd "${work_dir}"
+----
+====
+
+. Make a note of the cluster and tenant IDs
++
+[source,bash]
+----
+export CLUSTER_ID=c-the-cluster-1234 <1>
+export TENANT_ID=t-the-tenant-1234 <2>
+----
+<1> Replace `c-the-cluster-1234` with the ID of your cluster
+<2> Replace `t-the-tenant-1234` with the ID of your cluster's tenant
+
+. Compile the cluster catalog so you can make changes locally
++
+[source,bash]
+----
+commodore catalog compile "${CLUSTER_ID}"
+----
+
+. Determine whether you want to deploy the operator into namespace `openshift-operators` or `openshift-operators-redhat`.
++
+[source,bash]
+----
+export INSTANCE="openshift-operators" <1>
+----
+<1> Generally, community operators should be deployed in `openshift-operators`, while official RedHat operators should be deployed in `openshift-operators-redhat`.
+If you're not sure, it's best to choose `openshift-operators`.
+
+. Ensure the component is instantiated correctly for the cluster.
++
+[source,bash]
+----
+if [ ! -f "inventory/targets/${INSTANCE}.yml" ]; then
+  yq eval -i ".applications += [\"openshift4-operators as ${INSTANCE}\"]" \
+    "inventory/classes/${TENANT_ID}/${CLUSTER_ID}.yml" <1>
+  (cd "inventory/classes/${TENANT_ID}"; git commit -av; git push origin master) <2>
+fi
+----
+<1> Configure component instance
+<2> Commit and push cluster configuration change
+
+. Now you can create a cluster-scoped operator subscription in your component's Jsonnet code
++
+[source,jsonnet]
+----
+local operatorlib = import 'lib/openshift4-operators.libsonnet';
+
+{
+  subscription: operatorlib.managedSubscription(
+    'openshift-operators', <1>
+    'elasticsearch-eck-operator-certfied', <2>
+    'stable', <3>
+  )
+}
+----
+<1> The namespace in which the subscription should be created.
+Use the same value as you've selected for `${INSTANCE}` in the 3rd step.
+<2> The name of the operator to install
+<3> The update channel for the subscription
++
+TIP: See the xref:references/component-library.adoc[component library] reference documentation for full documentation of the functions provided by the library.
+
+. Compile the catalog locally to check your changes
++
+[source,bash]
+----
+commodore catalog compile "${CLUSTER_ID}" --local
+----
++
+You should see the following YAML added to your component's catalog directory
++
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  annotations: {}
+  labels:
+    name: elasticsearch-eck-operator-certified
+  name: elasticsearch-eck-operator-certified
+  namespace: openshift-operators
+spec:
+  channel: stable
+  installPlanApproval: Automatic <1>
+  name: elasticsearch-eck-operator-certified
+  source: certified-operators <2>
+  sourceNamespace: openshift-marketplace <3>
+----
+<1> The value of this field can be changed by providing optional parameter `installPlanApproval` when calling function `registerSubscription`.
+<2> The value of this field can be changed by providing optional parameter `source` when calling function `registerSubscription`.
+<3> The value of this field can be changed by providing optional parameter `sourceNamespace` when calling function `registerSubscription`.
++
+If the component hasn't previously been instantiated for `openshift-operators`, you'll also see new YAML files in the catalog in directory `openshift4-operators`.

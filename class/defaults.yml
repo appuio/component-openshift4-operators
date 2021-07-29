@@ -1,4 +1,13 @@
 parameters:
   openshift4_operators:
     =_metadata: {}
-    namespace: syn-openshift4-operators
+    multi_instance: true
+    namespace: ${_instance}
+    defaultInstallPlanApproval: Automatic
+    defaultSourceNamespace: openshift-marketplace
+
+  openshift_operators:
+    defaultSource: certified-operators
+
+  openshift_operators_redhat:
+    defaultSource: redhat-operators
