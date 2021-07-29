@@ -44,7 +44,7 @@ local validateInstance(instance, checkTargets=false, checkSource='') =
   instance;
 
 
-local Subscription(name) =
+local subscription(name) =
   kube._Object(apigroup + '/v1alpha1', 'Subscription', name) {
     spec: {
       name: name,
@@ -54,7 +54,28 @@ local Subscription(name) =
 local OperatorGroup(name) =
   kube._Object(apigroup + '/v1', 'OperatorGroup', name);
 
-local globalSubscription =
+local namespacedSubscription =
+  function(
+    namespace,
+    name,
+    channel,
+    source,
+    sourceNamespace=params.defaultSourceNamespace,
+    installPlanApproval=params.defaultInstallPlanApproval
+  )
+    subscription(name) {
+      metadata+: {
+        namespace: namespace,
+      },
+      spec+: {
+        channel: channel,
+        installPlanApproval: installPlanApproval,
+        source: source,
+        sourceNamespace: sourceNamespace,
+      },
+    };
+
+local managedSubscription =
   function(
     instance,
     name,
@@ -68,41 +89,17 @@ local globalSubscription =
       checkTargets=true,
       checkSource='subscription %s' % [ name ]
     );
-    Subscription(name) {
-      metadata+: {
-        namespace: _instance,
-      },
-      spec+: {
-        channel: channel,
-        installPlanApproval: installPlanApproval,
-        source: source,
-        sourceNamespace: sourceNamespace,
-      },
-    };
-
-local namespacedSubscription =
-  function(
-    namespace,
-    name,
-    channel,
-    source,
-    sourceNamespace=params.defaultSourceNamespace,
-    installPlanApproval=params.defaultInstallPlanApproval
-  )
-    Subscription(name) {
-      metadata+: {
-        namespace: namespace,
-      },
-      spec+: {
-        channel: channel,
-        installPlanApproval: installPlanApproval,
-        source: source,
-        sourceNamespace: sourceNamespace,
-      },
-    };
+    namespacedSubscription(
+      _instance,
+      name,
+      channel,
+      source,
+      sourceNamespace,
+      installPlanApproval
+    );
 
 {
-  globalSubscription: globalSubscription,
+  managedSubscription: managedSubscription,
   namespacedSubscription: namespacedSubscription,
   OperatorGroup: OperatorGroup,
   validateInstance: validateInstance,

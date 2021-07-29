@@ -66,7 +66,7 @@ fi
 local operatorlib = import 'lib/openshift4-operators.libsonnet';
 
 {
-  subscription: operatorlib.registerSubscription(
+  subscription: operatorlib.managedSubscription(
     'openshift-operators', <1>
     'elasticsearch-eck-operator-certfied', <2>
     'stable', <3>
