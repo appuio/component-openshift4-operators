@@ -77,6 +77,8 @@ local operatorlib = import 'lib/openshift4-operators.libsonnet';
 Use the same value as you've selected for `${INSTANCE}` in the 3rd step.
 <2> The name of the operator to install
 <3> The update channel for the subscription
++
+TIP: See the xref:references/component-library.adoc[component library] reference documentation for full documentation of the functions provided by the library.
 
 . Compile the catalog locally to check your changes
 +

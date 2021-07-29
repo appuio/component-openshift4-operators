@@ -1,0 +1,85 @@
+= Component library
+
+The component provides a component library to make creating Operator Lifecycle Manager (OLM) resources easier.
+This page documents the provided library functions.
+
+== `OperatorGroup`
+
+This function provides a wrapper to create `operatorgroups.operators.coreos.com` resources.
+
+The result of this function can be used in the same way as resources created by `kube.libjsonnet`.
+
+--
+.Arguments
+`name`:: The name of the resource. Used as `.metadata.name`.
+--
+
+== `validateInstance`
+
+This function takes an instance name and validates it against the supported instance names.
+Optionally the instance name is also validated against the instances which are present in the cluster catalog.
+
+If the validation is successful, the function returns the instance name unmodified.
+Otherwise it throws an error during catalog compilation.
+
+--
+.Arguments
+`instance`:: The instance name to validate.
+`checkTargets`:: Whether to validate the instance against configured component instances.
+`checkSource`:: An arbitrary string included in the error output when checking against configured component instances.
+This is included in the error in the following sentence `"Unknown instance '<instance>' for <checkSource>"`.
+--
+
+== `managedSubscription`
+
+This function creates a `subscriptions.operators.coreos.com` resource in a namespace managed by this component.
+
+The result of this function can be used in the same way as resources created by `kube.libjsonnet`.
+
+--
+.Arguments
+`instance`:: Name of the component instance in which to create the subscription
+`name`:: Name of the operator to install.
+Used as `.metadata.name` and `.spec.name` of the resulting `Subscription` object.
+`channel`:: The channel for the subscription.
+`source`:: The source (`CatalogSource`) for the operator.
+Defaults to `parameters.<instance>.defaultSource`.
+This argument can be omitted.
+`sourceNamespace`:: The namespace holding the `CatalogSource`.
+Defaults to `parameters.<instance>.defaultSourceNamespace`.
+This argument can be omitted.
+`installPlanApproval`:: How to manage subscription updates.
+Valid options are `Automatic` and `Manual`.
+Defaults to `parameters.<instance>.defaultInstallPlanApproval`.
+This argument can be omitted.
+--
+
+Arguments `source`, `sourceNamespace` and `installPlanApproval` are optional and default to component instance parameters `defaultSource`, `defaultSourceNamespace` and `defaultInstallPlanApproval`.
+
+== `namespacedSubscription`
+
+This function creates a `subscriptions.operators.coreos.com` resource in an arbitrary namespace.
+When using this function, the caller is responsible to ensure that an `OperatorGroup` resource exists in the target namespace.
+
+The result of this function can be used in the same way as resources created by `kube.libjsonnet`.
+
+--
+.Arguments
+`instance`:: Name of the component instance in which to create the subscription
+`name`:: Name of the operator to install.
+Used as `.metadata.name` and `.spec.name` of the resulting `Subscription` object.
+`channel`:: The channel for the subscription.
+`source`:: The source (`CatalogSource`) for the operator.
+Defaults to `parameters.<instance>.defaultSource`.
+This argument can be omitted.
+`sourceNamespace`:: The namespace holding the `CatalogSource`.
+Defaults to `parameters.<instance>.defaultSourceNamespace`.
+This argument can be omitted.
+`installPlanApproval`:: How to manage subscription updates.
+Valid options are `Automatic` and `Manual`.
+Defaults to `parameters.<instance>.defaultInstallPlanApproval`.
+This argument can be omitted.
+--
+
+Arguments `source`, `sourceNamespace` and `installPlanApproval` are optional and default to component instance parameters `defaultSource`, `defaultSourceNamespace` and `defaultInstallPlanApproval`.
+
