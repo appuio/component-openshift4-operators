@@ -34,7 +34,11 @@ This parameter configures the default value for the optional parameter `sourceNa
 type:: string
 default::
 +
-* `community-operators` for instance `openshift-operators`
+* `certified-operators` for instance `openshift-operators`
 * `redhat-operators` for instance `openshift-operators-redhat`
 
 This parameter configures the default value for the optional parameter `source` of the component library function `registerSubscription`.
+
+The component defaults to `certified-operators` for instance `openshift-operators`.
+This source provides community-maintained operators which are certified by RedHat.
+Alternatively, you can use `community-operators` for other community-maintained operators.

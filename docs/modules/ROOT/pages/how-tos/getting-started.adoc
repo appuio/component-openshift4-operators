@@ -68,14 +68,14 @@ local operatorlib = import 'lib/openshift4-operators.libsonnet';
 {
   subscription: operatorlib.registerSubscription(
     'openshift-operators', <1>
-    'grafana-operator', <2>
-    'alpha', <3>
+    'elasticsearch-eck-operator-certfied', <2>
+    'stable', <3>
   )
 }
 ----
 <1> The namespace in which the subscription should be created.
 Use the same value as you've selected for `${INSTANCE}` in the 3rd step.
-<2> The name of the subscription
+<2> The name of the operator to install
 <3> The update channel for the subscription
 
 . Compile the catalog locally to check your changes
@@ -94,14 +94,14 @@ kind: Subscription
 metadata:
   annotations: {}
   labels:
-    name: grafana-operator
-  name: grafana-operator
+    name: elasticsearch-eck-operator-certified
+  name: elasticsearch-eck-operator-certified
   namespace: openshift-operators
 spec:
-  channel: alpha
+  channel: stable
   installPlanApproval: Automatic <1>
-  name: grafana-operator
-  source: community-operators <2>
+  name: elasticsearch-eck-operator-certified
+  source: certified-operators <2>
   sourceNamespace: openshift-marketplace <3>
 ----
 <1> The value of this field can be changed by providing optional parameter `installPlanApproval` when calling function `registerSubscription`.

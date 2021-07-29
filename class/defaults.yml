@@ -7,7 +7,7 @@ parameters:
     defaultSourceNamespace: openshift-marketplace
 
   openshift_operators:
-    defaultSource: community-operators
+    defaultSource: certified-operators
 
   openshift_operators_redhat:
     defaultSource: redhat-operators
