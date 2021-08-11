@@ -19,7 +19,7 @@ local namespace = operatorlib.validateInstance(params.namespace);
           // enable cluster monitoring when instantiating to manage
           // namespace openshift-operators-redhat
           'openshift.io/cluster-monitoring':
-            namespace == 'openshift-operators-redhat',
+            '%s' % [ namespace == 'openshift-operators-redhat' ],
         },
       },
     },
