@@ -12,6 +12,20 @@ The namespace to create for the component instance.
 The component is implemented in such a way that only instances (and therefore namespaces) `openshift-operators` and `openshift-operators-redhat` can be created.
 Generally, it shouldn't be necessary to override this parameter.
 
+== `namespaceAnnotations`
+
+[horizontal]
+type:: dictionary
+default::
++
+[source,yaml]
+----
+openshift.io/node-selector: node-role.kubernetes.io/infra=
+----
+
+Annotations to be applied to the created namespace.
+
+
 == `defaultInstallPlanApproval`
 
 [horizontal]
