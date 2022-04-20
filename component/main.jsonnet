@@ -12,7 +12,7 @@ local namespace = operatorlib.validateInstance(params.namespace);
   [namespace]: [
     kube.Namespace(namespace) {
       metadata+: {
-        annotations+: params.namespaceAnnotations,
+        annotations+: std.prune(params.namespaceAnnotations),
         labels+: {
           // enable cluster monitoring when instantiating to manage
           // namespace openshift-operators-redhat

@@ -24,7 +24,13 @@ openshift.io/node-selector: node-role.kubernetes.io/infra=
 ----
 
 Annotations to be applied to the created namespace.
+Annotations can be removed in the hierarchy by setting the value to `null`.
 
+[NOTE]
+====
+Except for dropping null-valued entries, the component doesn't validate the provided annotations.
+It's the user's responsibility to ensure that only valid annotations (both key and value must be strings) are provided.
+====
 
 == `defaultInstallPlanApproval`
 
