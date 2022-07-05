@@ -8,6 +8,10 @@ parameters:
     defaultInstallPlanApproval: Automatic
     defaultSourceNamespace: openshift-marketplace
 
+    monitoring:
+      enabled: true
+      instance: null
+
   openshift_operators:
     defaultSource: certified-operators
 

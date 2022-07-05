@@ -62,3 +62,31 @@ This parameter configures the default value for the optional parameter `source` 
 The component defaults to `certified-operators` for instance `openshift-operators`.
 This source provides community-maintained operators which are certified by RedHat.
 Alternatively, you can use `community-operators` for other community-maintained operators.
+
+== `monitoring`
+
+This parameter allows users to enable the component's monitoring configuration.
+Currently the component has support for deploying custom `ServiceMonitors` on clusters which use component `prometheus` to manage a custom monitoring stack.
+
+[WARNING]
+The monitoring configuration is instance independent. It must not be changed between instances of this component.
+
+=== `enabled`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+Whether to deploy monitoring configurations.
+If this parameter is set to `true`, the component will check whether component `prometheus` is present on the cluster.
+If the component is missing, no configurations will be deployed regardless of the value of this parameter.
+
+=== `instance`
+
+[horizontal]
+type:: string
+default:: `null`
+
+This parameter can be used to indicate which custom Prometheus instance should pick up the configurations managed by the component.
+
+If the parameter is set to the empty string, the default instance configured for component `prometheus` will be used.
