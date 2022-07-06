@@ -28,4 +28,4 @@ local namespace = operatorlib.validateInstance(params.namespace);
       },
     },
   ],
-}
+} + (import 'monitoring.libsonnet')
