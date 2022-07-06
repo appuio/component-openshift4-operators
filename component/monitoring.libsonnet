@@ -5,8 +5,6 @@ Warning: The operators monitored are instance independent,
          everything in this file must be instance independent.
 */
 
-local cm = import 'lib/cert-manager.libsonnet';
-local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local prom = import 'lib/prometheus.libsonnet';
