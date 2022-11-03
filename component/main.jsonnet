@@ -18,6 +18,8 @@ local namespace = operatorlib.validateInstance(params.namespace);
           // namespace openshift-operators-redhat
           'openshift.io/cluster-monitoring':
             '%s' % [ namespace == 'openshift-operators-redhat' ],
+          // ignore namespace by user-workload monitoring
+          'openshift.io/user-monitoring': 'false',
         },
       },
     },
