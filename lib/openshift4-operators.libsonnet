@@ -37,8 +37,10 @@ local validateInstance(instance, checkTargets=false, checkSource='') =
     'openshift-operators-redhat',
   ]);
 
+  local use_custom_namespace = instanceParams(instance).useCustomNamespace;
+
   assert
-    std.setMember(instance, supported_instances) :
+    use_custom_namespace || std.setMember(instance, supported_instances) :
     "\n  Invalid instance '%s' for component openshift4-operators." % [
       instance,
     ] +

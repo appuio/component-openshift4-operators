@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations: {}
+  labels:
+    monitoring.syn.tools/infra: 'true'
+    name: syn-monitoring-openshift4-operators
+  name: syn-monitoring-openshift4-operators
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations: {}
+  labels:
+    name: openshift-marketplace-operator
+  name: openshift-marketplace-operator
+  namespace: syn-monitoring-openshift4-operators
+spec:
+  endpoints:
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      interval: 30s
+      metricRelabelings:
+        - action: drop
+          regex: etcd_(debugging|disk|request|server).*
+          sourceLabels:
+            - __name__
+        - action: drop
+          regex: (go_.*|process_.*|promhttp_.*)
+          sourceLabels:
+            - __name__
+      port: https-metrics
+      scheme: https
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        serverName: marketplace-operator-metrics.openshift-marketplace.svc
+  namespaceSelector:
+    matchNames:
+      - openshift-marketplace
+  selector:
+    matchLabels:
+      name: marketplace-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations: {}
+  labels:
+    name: openshift-catalog-operator
+  name: openshift-catalog-operator
+  namespace: syn-monitoring-openshift4-operators
+spec:
+  endpoints:
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      interval: 30s
+      metricRelabelings:
+        - action: drop
+          regex: etcd_(debugging|disk|request|server).*
+          sourceLabels:
+            - __name__
+        - action: drop
+          regex: (go_.*|process_.*|promhttp_.*)
+          sourceLabels:
+            - __name__
+      port: https-metrics
+      scheme: https
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        serverName: catalog-operator-metrics.openshift-operator-lifecycle-manager.svc
+  namespaceSelector:
+    matchNames:
+      - openshift-operator-lifecycle-manager
+  selector:
+    matchLabels:
+      app: catalog-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations: {}
+  labels:
+    name: openshift-olm-operator
+  name: openshift-olm-operator
+  namespace: syn-monitoring-openshift4-operators
+spec:
+  endpoints:
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      interval: 30s
+      metricRelabelings:
+        - action: drop
+          regex: etcd_(debugging|disk|request|server).*
+          sourceLabels:
+            - __name__
+        - action: drop
+          regex: (go_.*|process_.*|promhttp_.*)
+          sourceLabels:
+            - __name__
+      port: https-metrics
+      scheme: https
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        serverName: olm-operator-metrics.openshift-operator-lifecycle-manager.svc
+  namespaceSelector:
+    matchNames:
+      - openshift-operator-lifecycle-manager
+  selector:
+    matchLabels:
+      app: olm-operator
