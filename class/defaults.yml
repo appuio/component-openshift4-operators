@@ -7,6 +7,7 @@ parameters:
       openshift.io/node-selector: node-role.kubernetes.io/infra=
     defaultInstallPlanApproval: Automatic
     defaultSourceNamespace: openshift-marketplace
+    useCustomNamespace: false
 
     monitoring:
       enabled: true
