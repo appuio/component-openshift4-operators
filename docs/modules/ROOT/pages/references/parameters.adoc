@@ -9,7 +9,7 @@ type:: string
 default:: `${_instance}`
 
 The namespace to create for the component instance.
-The component is implemented in such a way that only instances (and therefore namespaces) `openshift-operators` and `openshift-operators-redhat` can be created.
+The component is implemented in such a way that only instances (and therefore namespaces) `openshift-operators` and `openshift-operators-redhat` can be created, unless `useCustomNamespace` is set to `true`.
 Generally, it shouldn't be necessary to override this parameter.
 
 == `namespaceAnnotations`
@@ -62,6 +62,15 @@ This parameter configures the default value for the optional parameter `source` 
 The component defaults to `certified-operators` for instance `openshift-operators`.
 This source provides community-maintained operators which are certified by RedHat.
 Alternatively, you can use `community-operators` for other community-maintained operators.
+
+== `useCustomNamespace`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to allow non-standard namespace names for the OperatorGroup.
+If this parameter is set to `true`, the component will allow using namespace names other than `openshift-operators` and `openshift-operators-redhat`.
 
 == `monitoring`
 
