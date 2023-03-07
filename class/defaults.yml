@@ -9,6 +9,11 @@ parameters:
     defaultSourceNamespace: openshift-marketplace
     useCustomNamespace: false
 
+    subscription:
+      name: null
+      channel: null
+      spec: {}
+
   openshift_operators:
     defaultSource: certified-operators
 
