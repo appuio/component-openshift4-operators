@@ -57,4 +57,4 @@ KUBENT_IMAGE    ?= ghcr.io/doitintl/kube-no-trouble:latest
 KUBENT_DOCKER   ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) --entrypoint=/app/kubent $(KUBENT_IMAGE)
 
 instance ?= openshift-operators-redhat
-test_instances = tests/openshift-operators-redhat.yml tests/openshift-operators.yml tests/openshift-operators-custom.yml
+test_instances = tests/openshift-operators-redhat.yml tests/openshift-operators.yml tests/openshift-operators-custom.yml tests/operator-subscription.yml
