@@ -8,4 +8,4 @@ parameters:
       - input_paths:
           - openshift4-operators/component/main.jsonnet
         input_type: jsonnet
-        output_path: ${_instance}/
+        output_path: openshift4-operators/
