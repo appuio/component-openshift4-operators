@@ -12,7 +12,7 @@ local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.openshift4_operators;
 
-local nsName = 'syn-monitoring-openshift4-operators';
+local nsName = 'syn-monitoring-' + params.namespace;
 
 local promInstance =
   if params.monitoring.instance != null then
@@ -100,7 +100,7 @@ local catalogOperatorMonitor = prom.ServiceMonitor('openshift-catalog-operator')
 
 if params.monitoring.enabled && std.member(inv.applications, 'prometheus') then
   {
-    monitoring: [
+    [params.namespace + '-monitoring']: [
       prom.RegisterNamespace(
         kube.Namespace(nsName),
         instance=promInstance
