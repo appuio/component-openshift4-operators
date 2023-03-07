@@ -9,10 +9,6 @@ parameters:
     defaultSourceNamespace: openshift-marketplace
     useCustomNamespace: false
 
-    monitoring:
-      enabled: true
-      instance: null
-
   openshift_operators:
     defaultSource: certified-operators
 
