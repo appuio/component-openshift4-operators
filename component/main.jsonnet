@@ -1,4 +1,5 @@
 // main template for openshift4-operators
+local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local operatorlib = import 'lib/openshift4-operators.libsonnet';
@@ -35,11 +36,28 @@ local operatorgroup =
 
 local nspatch = po.Patch(ns, nsmeta);
 
+local subscription = params.subscription;
+local sub =
+  // Create subscription, if name is given
+  if subscription.name != null then
+    operatorlib.managedSubscription(
+      params.namespace,
+      subscription.name,
+      subscription.channel
+    ) + {
+      spec+: subscription.spec,
+    }
+  else null;
+
 {
-  [namespace]:
-    if namespace != 'openshift-operators' then [
-      ns,
-      operatorgroup,
-    ]
-    else nspatch,
+  [namespace]: std.filter(
+    function(it) it != null,
+    (
+      if namespace != 'openshift-operators' then [
+        ns,
+        operatorgroup,
+      ]
+      else nspatch
+    ) + [ sub ]
+  ),
 }

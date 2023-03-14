@@ -7,7 +7,13 @@ parameters:
       openshift.io/node-selector: node-role.kubernetes.io/infra=
     defaultInstallPlanApproval: Automatic
     defaultSourceNamespace: openshift-marketplace
+    defaultSource: certified-operators
     useCustomNamespace: false
+
+    subscription:
+      name: null
+      channel: null
+      spec: {}
 
   openshift_operators:
     defaultSource: certified-operators
