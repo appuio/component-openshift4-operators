@@ -45,23 +45,6 @@ local sub =
       subscription.name,
       subscription.channel
     ) + {
-      spec+: {
-        config: {
-          affinity: {
-            nodeAffinity: {
-              requiredDuringSchedulingIgnoredDuringExecution: {
-                nodeSelectorTerms: [{
-                  matchExpressions: [{
-                    key: 'node-role.kubernetes.io/infra',
-                    operator: 'Exists',
-                  }],
-                }],
-              },
-            },
-          },
-        },
-      },
-    } + {
       spec+: subscription.spec,
     }
   else null;

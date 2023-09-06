@@ -4,7 +4,7 @@ parameters:
       multi_instance: true
     namespace: ${_instance}
     namespaceAnnotations:
-      openshift.io/node-selector: node-role.kubernetes.io/infra=
+      openshift.io/node-selector: ''
     defaultInstallPlanApproval: Automatic
     defaultSourceNamespace: openshift-marketplace
     defaultSource: certified-operators

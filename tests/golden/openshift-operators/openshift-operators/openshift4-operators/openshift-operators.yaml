@@ -13,7 +13,7 @@ spec:
       patchTemplate: |-
         "metadata":
           "annotations":
-            "openshift.io/node-selector": "node-role.kubernetes.io/infra="
+            "openshift.io/node-selector": ""
           "labels":
             "openshift.io/cluster-monitoring": "false"
             "openshift.io/user-monitoring": "false"
