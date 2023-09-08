@@ -66,6 +66,20 @@ local subscription(name) =
   kube._Object(apigroup + '/v1alpha1', 'Subscription', name) {
     spec: {
       name: name,
+      config: {
+        affinity: {
+          nodeAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: {
+              nodeSelectorTerms: [ {
+                matchExpressions: [ {
+                  key: 'node-role.kubernetes.io/infra',
+                  operator: 'Exists',
+                } ],
+              } ],
+            },
+          },
+        },
+      },
     },
   };
 

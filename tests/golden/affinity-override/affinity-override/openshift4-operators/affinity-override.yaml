@@ -4,19 +4,19 @@ metadata:
   annotations:
     openshift.io/node-selector: ''
   labels:
-    name: operator-subscription
+    name: affinity-override
     openshift.io/cluster-monitoring: 'false'
     openshift.io/user-monitoring: 'false'
-  name: operator-subscription
+  name: affinity-override
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   annotations: {}
   labels:
-    name: operator-subscription
-  name: operator-subscription
-  namespace: operator-subscription
+    name: affinity-override
+  name: affinity-override
+  namespace: affinity-override
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -25,7 +25,7 @@ metadata:
   labels:
     name: foo
   name: foo
-  namespace: operator-subscription
+  namespace: affinity-override
 spec:
   channel: stable
   config:
@@ -34,7 +34,7 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: node-role.kubernetes.io/infra
+                - key: node-role.kubernetes.io/master
                   operator: Exists
   installPlanApproval: Manual
   name: foo

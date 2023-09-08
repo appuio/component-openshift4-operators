@@ -20,7 +20,7 @@ default::
 +
 [source,yaml]
 ----
-openshift.io/node-selector: node-role.kubernetes.io/infra=
+openshift.io/node-selector: ''
 ----
 
 Annotations to be applied to the created namespace.
@@ -76,6 +76,8 @@ If this parameter is set to `true`, the component will allow using namespace nam
 
 This parameter allows users of the component to configure one subscription per instance.
 The component explicitly doesn't allow configuring multiple instances in the same namespace, since we've seen various issues with conflicting upgrades when multiple subscriptions are created in the same namespace, especially when `installPlanApproval=Manual` is required for some reason.
+By default the components sets the nodeAffinity to infra nodes, this can be overwritten.
+See https://docs.openshift.com/container-platform/latest/nodes/scheduling/nodes-scheduler-node-affinity.html#nodes-scheduler-node-affinity-configuring-required_nodes-scheduler-node-affinity[Official Documentation]
 
 === `subscription.name`
 

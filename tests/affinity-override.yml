@@ -1,0 +1,19 @@
+applications:
+  - openshift4-operators as affinity-override
+
+parameters:
+  affinity_override:
+    useCustomNamespace: true
+    subscription:
+      name: foo
+      channel: stable
+      spec:
+        installPlanApproval: Manual
+        config:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/master
+                        operator: Exists
