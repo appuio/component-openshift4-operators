@@ -1,0 +1,14 @@
+applications:
+  - openshift4-operators as operator-subscription-oke
+
+parameters:
+  facts:
+    distribution: oke
+
+  operator_subscription_oke:
+    useCustomNamespace: true
+    subscription:
+      name: foo
+      channel: stable
+      spec:
+        installPlanApproval: Manual

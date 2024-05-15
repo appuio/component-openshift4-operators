@@ -37,6 +37,7 @@ jobs:
           - openshift-operators-custom
           - operator-subscription
           - affinity-override
+          - operator-subscription-oke
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -56,6 +57,7 @@ jobs:
           - openshift-operators-custom
           - operator-subscription
           - affinity-override
+          - operator-subscription-oke
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
