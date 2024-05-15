@@ -15,6 +15,9 @@ local instanceParams(instance) =
 
 local apigroup = 'operators.coreos.com';
 
+local is_ocp =
+  std.get(inv.parameters.facts, 'distribution', '') == 'openshift4';
+
 /**
  * \brief Validate instance
  *
@@ -66,7 +69,7 @@ local subscription(name) =
   kube._Object(apigroup + '/v1alpha1', 'Subscription', name) {
     spec: {
       name: name,
-      config: {
+      [if is_ocp then 'config']: {
         affinity: {
           nodeAffinity: {
             requiredDuringSchedulingIgnoredDuringExecution: {

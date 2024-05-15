@@ -2,6 +2,9 @@ applications:
   - openshift4-operators as operator-subscription
 
 parameters:
+  facts:
+    distribution: openshift4
+
   operator_subscription:
     useCustomNamespace: true
     subscription:

@@ -2,6 +2,9 @@ applications:
   - openshift4-operators as affinity-override
 
 parameters:
+  facts:
+    distribution: openshift4
+
   affinity_override:
     useCustomNamespace: true
     subscription:
