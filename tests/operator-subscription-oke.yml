@@ -1,11 +1,11 @@
 applications:
-  - openshift4-operators as operator-subscription
+  - openshift4-operators as operator-subscription-oke
 
 parameters:
   facts:
-    distribution: openshift4
+    distribution: oke
 
-  operator_subscription:
+  operator_subscription_oke:
     useCustomNamespace: true
     subscription:
       name: foo

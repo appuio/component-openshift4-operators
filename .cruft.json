@@ -1,13 +1,13 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "a4aff6a9d004c1aad085a875c7759c8f8f1e0d3d",
+  "commit": "b5c430d9f4b4a4542f8ee6debf5f06d8c6a98374",
   "checkout": "main",
   "context": {
     "cookiecutter": {
       "name": "openshift4-operators",
       "slug": "openshift4-operators",
       "parameter_key": "openshift4_operators",
-      "test_cases": "openshift-operators-redhat openshift-operators openshift-operators-custom operator-subscription affinity-override",
+      "test_cases": "openshift-operators-redhat openshift-operators openshift-operators-custom operator-subscription affinity-override operator-subscription-oke",
       "add_lib": "y",
       "add_pp": "n",
       "add_golden": "y",
