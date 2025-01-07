@@ -2,6 +2,7 @@ parameters:
   openshift4_operators:
     =_metadata:
       multi_instance: true
+      multi_tenant: true
     namespace: ${_instance}
     namespaceAnnotations:
       openshift.io/node-selector: ''
