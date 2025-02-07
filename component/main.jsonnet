@@ -32,7 +32,7 @@ local operatorgroup =
   operatorlib.OperatorGroup(namespace) {
     metadata+: {
       namespace: namespace,
-    }
+    },
   } + {
     spec+: og.spec,
   };

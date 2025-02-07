@@ -106,3 +106,17 @@ This field is merged into the base `Subscription` object.
 You can override any valid fields in the `Subscription` object's `spec` here.
 
 IMPORTANT: The component doesn't validate the contents of this parameter.
+
+== `operator_group`
+
+This parameter allows users of the component to configure one OperatorGroup per instance.
+
+== `operator_group.spec`
+[horizontal]
+type:: object
+default:: `{}`
+
+This field is merged into the base `OperatorGroup` object.
+You can override any valid fields in the `OperatorGroup` object's `spec` here.
+
+IMPORTANT: The component doesn't validate the contents of this parameter.
