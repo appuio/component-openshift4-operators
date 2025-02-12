@@ -15,6 +15,8 @@ parameters:
       name: null
       channel: null
       spec: {}
+    operator_group:
+      spec: {}
 
   openshift_operators:
     defaultSource: certified-operators

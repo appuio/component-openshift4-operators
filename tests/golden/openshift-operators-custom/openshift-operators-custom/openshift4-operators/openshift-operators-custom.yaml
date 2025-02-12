@@ -17,3 +17,4 @@ metadata:
     name: openshift-operators-custom
   name: openshift-operators-custom
   namespace: openshift-operators-custom
+spec: {}

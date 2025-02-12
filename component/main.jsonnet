@@ -26,12 +26,15 @@ local nsmeta = {
 };
 local ns = kube.Namespace(namespace) + nsmeta;
 
+local og = params.operator_group;
 local operatorgroup =
   // Create cluster-scoped OperatorGroup
   operatorlib.OperatorGroup(namespace) {
     metadata+: {
       namespace: namespace,
     },
+  } + {
+    spec+: og.spec,
   };
 
 local nspatch = po.Patch(ns, nsmeta);

@@ -17,6 +17,7 @@ metadata:
     name: operator-subscription
   name: operator-subscription
   namespace: operator-subscription
+spec: {}
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
