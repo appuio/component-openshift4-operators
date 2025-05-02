@@ -1,9 +1,9 @@
 // main template for openshift4-operators
 local com = import 'lib/commodore.libjsonnet';
+local espejote = import 'lib/espejote.libsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local operatorlib = import 'lib/openshift4-operators.libsonnet';
-local po = import 'lib/patch-operator.libsonnet';
 
 local inv = kap.inventory();
 local params = inv.parameters.openshift4_operators;
@@ -37,7 +37,94 @@ local operatorgroup =
     spec+: og.spec,
   };
 
-local nspatch = po.Patch(ns, nsmeta);
+local _patchNamespaceMeta = 'patch-namespace-meta';
+local patchNamespaceMeta = [
+  espejote.managedResource(_patchNamespaceMeta, params.namespace) {
+    metadata+: {
+      annotations+: {
+        'syn.tools/description': |||
+          Patches the operator namespace to add the cluster-monitoring label.
+        |||,
+      },
+    },
+    spec: {
+      triggers: [
+        {
+          name: 'namespace',
+          watchResource: {
+            apiVersion: 'v1',
+            kind: 'Namespace',
+            name: params.namespace,
+          },
+        },
+      ],
+      serviceAccountRef: {
+        name: _patchNamespaceMeta,
+      },
+      template: std.manifestJson({
+        apiVersion: 'v1',
+        kind: 'Namespace',
+        metadata: {
+          name: params.namespace,
+        },
+      } + nsmeta),
+    },
+  },
+  {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    metadata: {
+      labels: {
+        'app.kubernetes.io/name': _patchNamespaceMeta,
+        'managedresource.espejote.io/name': _patchNamespaceMeta,
+      },
+      name: _patchNamespaceMeta,
+      namespace: params.namespace,
+    },
+  },
+  {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRole',
+    metadata: {
+      labels: {
+        'app.kubernetes.io/name': _patchNamespaceMeta,
+        'managedresource.espejote.io/name': _patchNamespaceMeta,
+      },
+      name: 'operator:%s:%s' % [ _patchNamespaceMeta, params.namespace ],
+    },
+    rules: [
+      {
+        apiGroups: [ '' ],
+        resources: [ 'namespaces' ],
+        resourceNames: [ params.namespace ],
+        verbs: [ '*' ],
+      },
+    ],
+  },
+  {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRoleBinding',
+    metadata: {
+      labels: {
+        'app.kubernetes.io/name': _patchNamespaceMeta,
+        'managedresource.espejote.io/name': _patchNamespaceMeta,
+      },
+      name: 'operator:%s:%s' % [ _patchNamespaceMeta, params.namespace ],
+    },
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
+      kind: 'ClusterRole',
+      name: 'operator:%s:%s' % [ _patchNamespaceMeta, params.namespace ],
+    },
+    subjects: [
+      {
+        kind: 'ServiceAccount',
+        name: _patchNamespaceMeta,
+        namespace: params.namespace,
+      },
+    ],
+  },
+];
 
 local subscription = params.subscription;
 local sub =
@@ -60,7 +147,7 @@ local sub =
         ns,
         operatorgroup,
       ]
-      else nspatch
+      else patchNamespaceMeta
     ) + [ sub ]
   ),
 }
