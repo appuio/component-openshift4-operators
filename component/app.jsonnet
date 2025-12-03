@@ -6,7 +6,15 @@ local argocd = import 'lib/argocd.libjsonnet';
 // Use `openshift-operators` as fallback namespace
 // By using a static value here, we don't get unexpected changes when users
 // create new instances of this component.
-local app = argocd.App('openshift4-operators', 'openshift-operators');
+local app = argocd.App('openshift4-operators', 'openshift-operators') {
+  spec+: {
+    syncPolicy+: {
+      syncOptions+: [
+        'ServerSideApply=true',
+      ],
+    },
+  },
+};
 
 local appPath =
   local project = std.get(std.get(app, 'spec', {}), 'project', 'syn');

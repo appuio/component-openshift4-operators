@@ -4,7 +4,6 @@
 
 local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
-local kube = import 'lib/kube.libjsonnet';
 
 local inv = kap.inventory();
 
@@ -65,26 +64,33 @@ local validateInstance(instance, checkTargets=false, checkSource='') =
   instance;
 
 
-local subscription(name) =
-  kube._Object(apigroup + '/v1alpha1', 'Subscription', name) {
-    spec: {
+local subscription(name) = {
+  apiVersion: apigroup + '/v1alpha1',
+  kind: 'Subscription',
+  metadata: {
+    labels: {
       name: name,
-      [if is_ocp then 'config']: {
-        affinity: {
-          nodeAffinity: {
-            requiredDuringSchedulingIgnoredDuringExecution: {
-              nodeSelectorTerms: [ {
-                matchExpressions: [ {
-                  key: 'node-role.kubernetes.io/infra',
-                  operator: 'Exists',
-                } ],
+    },
+    name: name,
+  },
+  spec: {
+    name: name,
+    [if is_ocp then 'config']: {
+      affinity: {
+        nodeAffinity: {
+          requiredDuringSchedulingIgnoredDuringExecution: {
+            nodeSelectorTerms: [ {
+              matchExpressions: [ {
+                key: 'node-role.kubernetes.io/infra',
+                operator: 'Exists',
               } ],
-            },
+            } ],
           },
         },
       },
     },
-  };
+  },
+};
 
 /**
  * \brief Wrapper to create `OperatorGroup` resources
@@ -96,8 +102,16 @@ local subscription(name) =
  *
  * \returns an `OperatorGroup` resource
  */
-local OperatorGroup(name) =
-  kube._Object(apigroup + '/v1', 'OperatorGroup', name);
+local OperatorGroup(name) = {
+  apiVersion: apigroup + '/v1',
+  kind: 'OperatorGroup',
+  metadata: {
+    labels: {
+      name: name,
+    },
+    name: name,
+  },
+};
 
 /**
  * \brief Create a subscription object in an arbitrary namespace
