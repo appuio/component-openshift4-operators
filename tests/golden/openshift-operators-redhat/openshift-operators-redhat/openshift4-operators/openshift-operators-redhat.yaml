@@ -12,7 +12,6 @@ metadata:
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  annotations: {}
   labels:
     name: openshift-operators-redhat
   name: openshift-operators-redhat
