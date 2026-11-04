@@ -2,6 +2,7 @@ apiVersion: espejote.io/v1alpha1
 kind: ManagedResource
 metadata:
   annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     syn.tools/description: |
       Patches the operator namespace to add the cluster-monitoring label.
   labels:
